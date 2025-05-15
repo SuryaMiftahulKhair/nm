@@ -1,9 +1,8 @@
-// app/amplify-cognito-config.tsx
 'use client';
 
 import { Amplify } from 'aws-amplify';
 
-Amplify.configure({
+export const authConfig = {
   Auth: {
     Cognito: {
       userPoolId: 'us-east-1_ZrSSW3APp',
@@ -13,13 +12,12 @@ Amplify.configure({
       },
     },
   },
-});
+};
+
+Amplify.configure(authConfig);
 
 const ConfigureAmplifyClientSide = () => {
   return null;
 };
 
-
-
 export default ConfigureAmplifyClientSide;
-
