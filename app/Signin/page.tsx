@@ -38,7 +38,7 @@ export default function SignIn() {
     typeof err === 'object' &&
     err !== null &&
     'name' in err &&
-    typeof (err as any).name === 'string'
+    typeof (err as { name?: unknown }).name === 'string'
   ) {
     const errorName = (err as { name: string }).name;
 
