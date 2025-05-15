@@ -28,8 +28,15 @@ export default function VerifyPage() {
       setTimeout(() => {
         router.push('/Signin');
       }, 2000);
-    } catch (error: any) {
-      setMessage('❌ Gagal verifikasi: ' + error.message);
+    } catch (error: unknown) {
+  let message = 'Gagal verifikasi.';
+
+  if (error instanceof Error) {
+    message = error.message;
+  }
+
+  setMessage('❌ Gagal verifikasi: ' + message);
+
     } finally {
       setLoading(false);
     }

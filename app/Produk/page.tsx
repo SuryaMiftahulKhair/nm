@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { FaUserCircle, FaPen, FaTrash } from 'react-icons/fa';
+import Image from 'next/image';
 
 const dummyProducts = [
   {
@@ -60,7 +61,7 @@ const ProdukPage = () => {
               key={product.id}
               className="bg-gray-100 p-4 rounded-lg shadow-md flex flex-col items-center text-center"
             >
-              <img
+              <Image
                 src={product.image}
                 alt={product.name}
                 className="w-24 h-24 object-cover mb-3"

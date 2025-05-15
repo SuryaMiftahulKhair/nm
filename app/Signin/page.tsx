@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { signIn } from 'aws-amplify/auth';
 import Link from "next/link";
 
+
 export default function SignIn() {
   const router = useRouter();
   const [email, setEmail] = useState('');
@@ -30,26 +31,41 @@ export default function SignIn() {
       } else {
         setError('Login berhasil tapi memerlukan langkah tambahan.');
       }
-    } catch (err: any) {
-      console.error('Login failed:', err);
+    } catch (err: unknown) {
+  console.error('Login failed:', err);
 
-      if (err.name === 'UserNotFoundException') {
-        setError('Akun tidak ditemukan. Silakan daftar terlebih dahulu.');
-      } else if (err.name === 'NotAuthorizedException') {
-        setError('Password salah atau akun belum dikonfirmasi.');
-      } else if (err.name === 'UserNotConfirmedException') {
-        setError('Akun Anda belum terverifikasi. Periksa email Anda.');
-        router.push(`/verify?email=${encodeURIComponent(email)}`);
-      } else {
-        setError(err.message || 'Gagal login. Silakan coba lagi.');
-      }
+  if (
+    typeof err === 'object' &&
+    err !== null &&
+    'name' in err &&
+    typeof (err as any).name === 'string'
+  ) {
+    const errorName = (err as { name: string }).name;
+
+    if (errorName === 'UserNotFoundException') {
+      setError('Akun tidak ditemukan. Silakan daftar terlebih dahulu.');
+    } else if (errorName === 'NotAuthorizedException') {
+      setError('Password salah atau akun belum dikonfirmasi.');
+    } else if (errorName === 'UserNotConfirmedException') {
+      setError('Akun Anda belum terverifikasi. Periksa email Anda.');
+      router.push(`/verify?email=${encodeURIComponent(email)}`);
+    } else {
+      const message =
+        (err as { message?: string }).message || 'Gagal login. Silakan coba lagi.';
+      setError(message);
     }
+  } else {
+    setError('Gagal login. Silakan coba lagi.');
+  }
+}
+
+    
   }
 
    return (
     <div className="relative h-screen w-screen">
       {/* Background image */}
-      <img
+      <Image
         src="/singin.jpg"
         alt="Background"
         className="absolute inset-0 w-full h-full object-cover z-0"

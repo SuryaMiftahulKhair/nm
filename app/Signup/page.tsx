@@ -41,10 +41,15 @@ export default function Signup() {
       console.log("Signup success:", result);
       // Setelah signup sukses → arahkan ke halaman konfirmasi atau langsung login
       router.push("/Homepage");
-    } catch (error: any) {
-      console.error("Signup error:", error);
-      alert(error.message || "Signup failed");
-    }
+    } catch (error: unknown) {
+  console.error("Signup error:", error);
+
+  if (error instanceof Error) {
+    alert(error.message || "Signup failed");
+  } else {
+    alert("Signup failed");
+  }
+}    
   };
 
   return (
